@@ -1,0 +1,81 @@
+<div class="container">
+    <button class="row middle poppins text-big deep-sea-green bold m-bottom-9" (click)="goBack()">
+	  <i class="icon icon-long-left-arrow back-arrow title-small m-right-2"></i>
+	  Volver
+	</button>
+    <h1 class="title-small poppins bold deep-sea-green m-bottom-9">
+        Editar información del proveedor
+    </h1>
+    <form class="width-100" [formGroup]="form" (ngSubmit)="saveChanges()">
+        <div formGroupName="general" class="card-container width-100 column m-bottom-6">
+            <div class="row m-bottom-8">
+                <h3 class="title-small deep-sea-green medium m-right-3">Datos generales</h3>
+                <button type="button" (click)="toggleCard('General')" class="toggle-card" [ngClass]="{'rotate': isGeneralVisible}">
+			<i class="icon icon-short-down-arrow title-medium deep-sea-green bold"></i>
+		  </button>
+            </div>
+            <div class="column" [ngClass]="{'hide': !isGeneralVisible}">
+                <app-input-control formControlName="company" label="Nombre" id="company" classContainer="m-bottom-9">
+                </app-input-control>
+                <app-input-control formControlName="nit" label="NIT" id="nit" classContainer="m-bottom-9">
+                </app-input-control>
+                <app-select-control formControlName="country" label="País" id="country" classContainer="m-bottom-9" [data]="countries" (valueChange)="changeCountry($event)">
+                </app-select-control>
+                <app-select-control formControlName="region" label="Región" id="region" classContainer="m-bottom-9" [data]="regions" (valueChange)="changeRegion($event)">
+                </app-select-control>
+                <app-select-control formControlName="city" label="Ciudad" id="city" classContainer="m-bottom-9" [data]="cities">
+                </app-select-control>
+                <app-input-control formControlName="address" label="Dirección" id="address" classContainer="m-bottom-9">
+                </app-input-control>
+            </div>
+        </div>
+        <div formGroupName="contact" class="card-container width-100 column m-bottom-6">
+            <div class="row m-bottom-8">
+                <h3 class="title-small deep-sea-green medium">Datos de contacto</h3>
+                <button type="button" (click)="toggleCard('Contact')" class="toggle-card" [ngClass]="{'rotate': isContactVisible}">
+			<i class="icon icon-short-down-arrow title-medium deep-sea-green bold"></i>
+		  </button>
+            </div>
+            <div class="column" [ngClass]="{'hide': !isContactVisible}">
+                <app-input-control formControlName="contactName" label="Nombre de contacto" id="contactName" classContainer="m-bottom-9">
+                </app-input-control>
+                <app-input-control formControlName="contactPhone" label="Teléfono de contacto" id="contactPhone" classContainer="m-bottom-9">
+                </app-input-control>
+                <app-input-control formControlName="contactEmail" label="Correo electrónico de contacto" id="contactEmail" classContainer="m-bottom-9">
+                </app-input-control>
+                <h3 class="text-big bold deep-sea-green m-bottom-3">Datos del administrador general</h3>
+                <div class="row m-bottom-9">
+                    <img src="/assets/icons/warning.png" class="warning-icon m-right-6" alt="Información" />
+                    <p class="text-normal deep-sea-green">
+                        El siguiente es el correo electrónico actual del administrador de la plataforma, puede hacer clic en el ícono lápiz para editar la información si es necesario.
+                    </p>
+                </div>
+                <app-input-control formControlName="adminEmail" label="Correo electrónico administrador" id="adminEmail" class="m-bottom-9"></app-input-control>
+            </div>
+        </div>
+        <div class="width-100 row end m-bottom-6">
+            <button type="button" class="button-secondary m-right-4" (click)="goBack()">Volver</button>
+            <button type="submit" class="button-primary" [disabled]="form.invalid">
+		  Guardar cambios
+		</button>
+        </div>
+    </form>
+</div>
+
+<modal id="modal-subsidiary-edit" [applyPadding]="false">
+    <div class="modal-content column center">
+        <div class="header-content width-100 row center middle m-bottom-4">
+            <img class="modal-icon" [hidden]="!requestError" src="assets/icons/doc-error.svg" alt="Estado" />
+            <img class="modal-icon" [hidden]="requestError" src="assets/icons/doc-success.svg" alt="Estado" />
+        </div>
+        <h2 class="title-medium bold tiber m-bottom-4">
+            {{requestError ? '¡Los datos no se guardaron!' : '¡Datos guardados!'}}
+        </h2>
+        <p class="text-big text-center deep-sea-green m-bottom-9 m-right-3 m-left-3">
+            {{requestError ? 'Los datos ingresados no fueron guardados, por favor inténtalo nuevamente.' : 'Los datos ingresados se actualizaron con éxito'}}
+        </p>
+        <button class="button-primary m-bottom-9" (click)="closeModal()" type="button">
+		{{requestError ? 'Ingresar datos' : 'Regresar'}}
+	  </button>
+    </div>
+</modal>
