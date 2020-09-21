@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
 import { RegionInterface, CountryInterface, CityInterface } from './interfaces/locations.interface';
+import { ProviderDetails } from './interfaces/provider.interface';
+import { FIELDS } from './constants/constants';
+
 import { LocationsService } from './services/locations.service';
 import { ModalService } from './services/modal.service';
 import { FormService } from './services/form.service';
-import { ProviderDetails } from './interfaces/provider.interface';
-import { FIELDS } from './constants/constants';
 import { ProviderService } from './services/provider.service';
-
-import LiferayParams from '../types/LiferayParams'
 
 declare const Liferay: any;
 
@@ -31,28 +28,32 @@ export class AppComponent implements OnInit {
 	isContactVisible = true;
   
 	constructor(
-	  private route: ActivatedRoute,
 	  private locationService: LocationsService,
 	  private modalService: ModalService,
 	  private formService: FormService,
-	  private location: Location,
 	  private providerService: ProviderService
 	) { }
   
 	ngOnInit() {
 	  this.form = this.formService.createForm(FIELDS);
-	  this.locationService.getCountries().subscribe(({ data }) => this.countries = data, () => this.countries = []);
-	  this.route.data.subscribe(({ user }) => {
-		this.locationService.getRegions(user.location.city.region.country.id).subscribe(response => {
-		  this.regions = response.data;
-		  this.locationService.getCities(user.location.city.region.id).subscribe(response => {
-			this.cities = response.data;
-			this.providerDetail = user;
-			this.setData();
-		  },
-			() => this.cities = []);
-		},
-		  () => this.regions = []);
+	  this.locationService.getCountries()
+	  	.subscribe(({ data }) => this.countries = data, () => this.countries = []);
+	  
+	  this.providerService.getProviderProfile( this.getURLParameter("id") )
+	  	.subscribe( user => {
+			this.locationService.getRegions(user.location.city.region.country.id)
+				.subscribe(response => {
+					this.regions = response.data;
+					this.locationService.getCities(user.location.city.region.id)
+						.subscribe(response => {
+							this.cities = response.data;
+							this.providerDetail = user;
+							this.setData();
+					},
+						() => this.cities = []
+					);
+			},
+			() => this.regions = []);
 	  });
 	}
   
@@ -67,12 +68,13 @@ export class AppComponent implements OnInit {
 		  address: this.providerDetail.location.address
 		},
 		contact: {
-		  contactName: this.providerDetail.contactName,
+		  contactName: this.providerDetail.contact_name,
 		  contactPhone: this.providerDetail.phone,
 		  contactEmail: this.providerDetail.email,
-		  adminEmail: this.providerDetail.adminUser.email
+		  adminEmail: this.providerDetail.admin_user.email
 		}
 	  };
+
 	  this.form.setValue(formData);
 	}
   
@@ -100,12 +102,13 @@ export class AppComponent implements OnInit {
 		  address: this.form.get('general').value.address
 		},
 		admin_user: {
-		  id: this.providerDetail.adminUser.id,
+		  id: this.providerDetail.admin_user.id,
 		  email: this.form.get('contact').value.adminEmail.toLowerCase()
 		}
 	  };
-	  //TODO por inconvniente en el subscribe
-	  /* this.providerService.putProviderProfile(data, this.form.get('general').value.city).subscribe(
+
+	  // TODO por inconvniente en el subscribe
+	  this.providerService.putProviderProfile(data, this.form.get('general').value.city).subscribe(
 		() => {
 		  this.requestError = false;
 		  this.openModal();
@@ -114,7 +117,7 @@ export class AppComponent implements OnInit {
 		  this.requestError = true;
 		  this.openModal();
 		}
-	  ); */
+	  );
 	}
   
 	openModal() {
@@ -124,16 +127,24 @@ export class AppComponent implements OnInit {
 	closeModal() {
 	  this.modalService.close('modal-subsidiary-edit');
 	  if (!this.requestError) {
-		this.goBack();
+		window.location.href = "/providers";
 	  }
 	}
   
 	toggleCard(type: string) {
 	  this[`is${type}Visible`] = !this[`is${type}Visible`];
 	}
-  
-	goBack() {
-	  this.location.back();
-	}
+
+	// this.getURLParameter("id")
+	private getURLParameter(paramName: string){
+	  var pageURL = window.location.search.substring(1);
+	  var variables = pageURL.split('&');
+	  for (var i = 0; i < variables.length; i++) {
+	    var param = variables[i].split('=');
+	    if (param[0] == paramName) {
+	      return param[1];
+	    }
+	  }
+	}​
   }
   

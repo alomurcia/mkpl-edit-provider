@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { InputControlComponent } from './input-control.component';
@@ -7,7 +9,12 @@ import { ModalComponent } from './modal.component';
 import { SelectControlComponent } from './select-control.component';
 
 @NgModule({
-	imports: [BrowserModule],
+	imports: [
+		BrowserModule,
+		FormsModule,
+		HttpClientModule,
+		ReactiveFormsModule
+	],
 	declarations: [
 		AppComponent,
 		InputControlComponent,

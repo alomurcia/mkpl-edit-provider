@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { ASC } from '../constants/queries';
 import { createPageHttp } from '../utils/request';
 
-//import { environment } from '../environments/environment';
 import { ProviderDetails, Provider } from '../interfaces/provider.interface';
 
 import { ListResponse, Paginator } from '../interfaces/paginator.interface';
@@ -17,24 +16,29 @@ export class ProviderService {
   constructor(private http: HttpClient) { }
 
   createProvider(data: any, cityId: string): Observable<any> {
-   /* return this.http.post(
-      `${environment.BACK_ENDPOINT}/provider?city_id=${cityId}`,
-      data
-    );*/
-    return;
+    return this.http.post(
+       `http://localhost:8081/api/provider?city_id=${cityId}`,
+       data
+     );
   }
 
-  getProviders(page = 0, order = 'id', orderBy = ASC, limit = 10): Observable<Paginator> {
-    const params = createPageHttp({ page, order, orderBy, limit});
-   /* return this.http
-      .get<ListResponse>(`${environment.BACK_ENDPOINT}/provider`, { params })
+  getProviders(
+    page:0, 
+    order = 'id', orderBy = ASC, limit = 10): 
+    Observable<any> {
+    const params = new HttpParams()
+    .set('page', page.toString())
+    .set('order_by', orderBy.toString())
+    .set('order', order.toString())
+    .set('limit', limit.toString());
+    return this.http
+      .get<ListResponse>(`http://localhost:8081/api/provider`, { params })
       .pipe(
         map(({ content, ...paginator }) => ({
-          data: content as Provider[],
-          dataPaginator: paginator
+          data: content,
+          ...paginator,
         }))
-      );*/
-      return;
+      );
   }
 
    toggleProvider(id:any) {
@@ -45,16 +49,15 @@ export class ProviderService {
   } 
 
   getProviderProfile(id: string): Observable<ProviderDetails> {
-   /* return this.http.get<ProviderDetails>(
-      `${environment.BACK_ENDPOINT}/provider/${id}`
-    );*/
-    return;
+   return this.http.get<ProviderDetails>(
+      `http://localhost:8081/api/provider/${id}`
+    );
   }
 
    putProviderProfile(data:any, cityId:any) {
-   /* return this.http.put(
-      `${environment.BACK_ENDPOINT}/provider?city_id=${cityId}`,
+    return this.http.put(
+      `http://localhost:8081/api/provider?city_id=${cityId}`,
       data
-    );*/
+    );
   }
 }

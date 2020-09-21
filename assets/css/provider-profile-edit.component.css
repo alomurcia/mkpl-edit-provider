@@ -42,3 +42,12 @@
 .hide {
     display: none;
 }
+
+.no-border-back {
+    background: transparent;
+    border: none;
+}
+
+.row.no-wrap {
+    flex-wrap: nowrap;
+}

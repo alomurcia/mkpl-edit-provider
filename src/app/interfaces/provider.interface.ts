@@ -25,7 +25,7 @@ export interface ProviderDetails extends Provider {
   nit: string;
   phone: string;
   email: string;
-  contactName: string;
+  contact_name: string;
   location: {
     id: number;
     address: string;
@@ -44,7 +44,7 @@ export interface ProviderDetails extends Provider {
       };
     };
   };
-  adminUser: {
+  admin_user: {
     id: number;
     email: string;
     subsidiaryExternalId: number;
