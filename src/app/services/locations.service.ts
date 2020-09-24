@@ -12,14 +12,14 @@ export class LocationsService {
   // TODO actualizar endpoints
 
    getCountries(): Observable<any> {
-    return this.http.get<any[]>(`http://localhost:8082/api/country`);
+    return this.http.get<any[]>(`http://localhost:8080/o/LocationCompraDigitalPortlet/api/city/country`);
   }
 
   getRegions(countryId: number): Observable<any> {
-    return this.http.get(`http://localhost:8082/api/region/country/${countryId}`);
+    return this.http.get(`http://localhost:8080/o/LocationCompraDigitalPortlet/api/city/region/country/${countryId}`);
   }
 
-  getCities(regionId: number): Observable<{ data: CityInterface[] }> {
-    return this.http.get<{ data: CityInterface[] }>(`http://localhost:8082/api/city/region/${regionId}`);
+  getCities(regionId: number): Observable<any> {
+    return this.http.get(`http://localhost:8080/o/LocationCompraDigitalPortlet/api/city/region/${regionId}`);
   } 
 }

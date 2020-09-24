@@ -37,16 +37,16 @@ export class AppComponent implements OnInit {
 	ngOnInit() {
 	  this.form = this.formService.createForm(FIELDS);
 	  this.locationService.getCountries()
-	  	.subscribe(({ data }) => this.countries = data, () => this.countries = []);
+	  	.subscribe(res => this.countries = res, () => this.countries = []);
 	  
 	  this.providerService.getProviderProfile( this.getURLParameter("id") )
 	  	.subscribe( user => {
 			this.locationService.getRegions(user.location.city.region.country.id)
 				.subscribe(response => {
-					this.regions = response.data;
+					this.regions = response;
 					this.locationService.getCities(user.location.city.region.id)
 						.subscribe(response => {
-							this.cities = response.data;
+							this.cities = response;
 							this.providerDetail = user;
 							this.setData();
 					},
@@ -79,12 +79,12 @@ export class AppComponent implements OnInit {
 	}
   
 	changeCountry(value:any) {
-	  this.locationService.getRegions(value).subscribe(response => this.regions = response.data, () => this.regions = []);
+	  this.locationService.getRegions(value).subscribe(response => this.regions = response, () => this.regions = []);
 	  this.form.get('general.region').setValue('');
 	}
   
 	changeRegion(value:any) {
-	  this.locationService.getCities(value).subscribe(response => this.cities = response.data, () => this.cities = []);
+	  this.locationService.getCities(value).subscribe(response => this.cities = response, () => this.cities = []);
 	  this.form.get('general.city').setValue('');
 	}
   
