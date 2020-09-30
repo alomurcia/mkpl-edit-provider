@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-prov-edit">
     <!-- TODO se cambia botón <button class="row middle poppins text-big deep-sea-green bold m-bottom-9" (click)="goBack()">
 	  <i class="icon icon-long-left-arrow back-arrow title-small m-right-2"></i>
 	  Volver
@@ -11,7 +11,7 @@
         Editar información del proveedor
     </h1>
     <form class="width-100" [formGroup]="form" (ngSubmit)="saveChanges()">
-        <div formGroupName="general" class="card-container width-100 column2 m-bottom-6">
+        <div formGroupName="general" class="card-container-edit-prov width-100 column2 m-bottom-6">
             <div class="row2 m-bottom-8">
                 <h3 class="title-small deep-sea-green medium m-right-3">Datos generales</h3>
                 <button type="button" (click)="toggleCard('General')" class="toggle-card no-border-back" [ngClass]="{'rotate': isGeneralVisible}">
@@ -33,7 +33,7 @@
                 </app-input-control>
             </div>
         </div>
-        <div formGroupName="contact" class="card-container width-100 column2 m-bottom-6">
+        <div formGroupName="contact" class="card-container-edit-prov width-100 column2 m-bottom-6">
             <div class="row2 m-bottom-8">
                 <h3 class="title-small deep-sea-green medium">Datos de contacto</h3>
                 <button type="button" (click)="toggleCard('Contact')" class="toggle-card no-border-back" [ngClass]="{'rotate': isContactVisible}">

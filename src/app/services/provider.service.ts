@@ -50,13 +50,13 @@ export class ProviderService {
 
   getProviderProfile(id: string): Observable<ProviderDetails> {
    return this.http.get<ProviderDetails>(
-      `http://localhost:8080/o/ProviderCompraDigitalPortlet/api/provider/${id}`
+      `/o/ProviderCompraDigitalPortlet/api/provider/${id}`
     );
   }
 
    putProviderProfile(data:any, cityId:any) {
     return this.http.put(
-      `http://localhost:8080/o/ProviderCompraDigitalPortlet/api/provider/upd?city_id=${cityId}`,
+      `/o/ProviderCompraDigitalPortlet/api/provider/upd?city_id=${cityId}`,
       data
     );
   }

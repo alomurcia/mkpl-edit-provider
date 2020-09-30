@@ -1,4 +1,4 @@
-.container {
+.container-prov-edit {
     margin: 0 auto;
     max-width: 1135px;
     width: 100%;
@@ -16,7 +16,7 @@
     transform: rotate(180deg);
 }
 
-.card-container {
+.card-container-edit-prov {
     background-color: #FFF;
     border: 2px solid #F5F6FB;
     border-radius: 8px;
@@ -48,6 +48,6 @@
     border: none;
 }
 
-.row.no-wrap {
+.row2.no-wrap {
     flex-wrap: nowrap;
 }
